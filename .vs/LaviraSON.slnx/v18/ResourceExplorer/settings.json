@@ -1,0 +1,23 @@
+{
+  "ShowEmptyProjects": false,
+  "SelectedGroups": [
+    "C:\\Users\\HRN576\\Desktop\\Lavira Dosyalar\\Lavira_AraYuz\\LaviraSON\\LaviraSON\\Properties\\Resources.resx"
+  ],
+  "ExpandedProjects": [
+    "C:\\Users\\HRN576\\Desktop\\Lavira Dosyalar\\Lavira_AraYuz\\LaviraSON\\LaviraSON\\LaviraSON.csproj"
+  ],
+  "EnableSpellChecker": false,
+  "ColumnOrder": [
+    "name",
+    "file-path",
+    "file-name",
+    "type",
+    "neutral-value",
+    "neutral-comment"
+  ],
+  "VisibleColumnKeys": [
+    "name",
+    "neutral-comment",
+    "neutral-value"
+  ]
+}
