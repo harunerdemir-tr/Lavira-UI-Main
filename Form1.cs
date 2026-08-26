@@ -68,21 +68,22 @@ namespace LaviraSON
         private readonly string appDir = AppDomain.CurrentDomain.BaseDirectory;
         private readonly TelemetriDurumu telemetriDurumu = new TelemetriDurumu();
         private DurumSesiYoneticisi durumSesiYoneticisi;
-        private string anaBuffer = "";
+        private readonly List<byte> anaByteList = new List<byte>();
         private readonly object anaBufferKilidi = new object(); // OPT-1: Buffer thread-safety
-        private BlockingCollection<string> anaKuyruk;
+        private BlockingCollection<byte[]> anaKuyruk;
         private CancellationTokenSource anaIptal;
         private Task anaTask; // OPT-6: Task referansı saklandı
 
-        private string gorevBuffer = "";
+        private readonly List<byte> gorevByteList = new List<byte>();
         private readonly object gorevBufferKilidi = new object(); // OPT-1: Buffer thread-safety
-        private BlockingCollection<string> gorevKuyruk;
+        private BlockingCollection<byte[]> gorevKuyruk;
         private CancellationTokenSource gorevIptal;
         private Task gorevTask; // OPT-6: Task referansı saklandı
         private SynchronizationContext uiContext;
 
         // Paket sayacı (thread-safe artış için Interlocked)
         private int paketSayaci = 0;
+        private int gorevPaketSayaci = 0;
 
         // OPT-4: Harita 10 Hz limiti için son güncelleme zamanı
         private int sonHaritaGuncelleme = 0;
@@ -127,6 +128,10 @@ namespace LaviraSON
             pnlUnity.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             this.Resize += (s, ev) => { pnlUnity_Resize(null, null); };
 
+            // Sol Panel Scroll desteği
+            panel1.MouseEnter += (s, ev) => panel1.Focus();
+            tableLayoutPanel3.MouseEnter += (s, ev) => panel1.Focus();
+
             // UDP
             udpClient = new UdpClient();
             unityAdresi = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 5555);
@@ -139,9 +144,15 @@ namespace LaviraSON
 
             // Log
             string zamanDamgasi = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-            dosyaYolu = Path.Combine(appDir, $"roket_log_{zamanDamgasi}.csv");
+            string logKlasoru = Path.Combine(appDir, "LOG DOSYALARI");
             try
             {
+                if (!Directory.Exists(logKlasoru))
+                {
+                    Directory.CreateDirectory(logKlasoru);
+                }
+
+                dosyaYolu = Path.Combine(logKlasoru, $"roket_log_{zamanDamgasi}.csv");
                 logWriter = new StreamWriter(dosyaYolu, true); // AutoFlush kapalı
                 logWriter.WriteLine(
                     "ZAMAN,KAYNAK,ANA_0_DURUM,ANA_1_IRT,ANA_2_HIZ,ANA_3_SIC,ANA_4_NEM,ANA_5_EN,ANA_6_BOY," +
@@ -275,12 +286,12 @@ namespace LaviraSON
                 {
                     serialPort1.PortName = cmbPorts.Text;
                     serialPort1.BaudRate = Convert.ToInt32(cmbBaud.Text);
-                    serialPort1.DtrEnable = true;
-                    serialPort1.RtsEnable = true;
+                    serialPort1.DtrEnable = false; // ESP32/STM32 reset döngüsünü engeller
+                    serialPort1.RtsEnable = false;
 
                     // Kuyruk ve token oluştur
                     anaIptal = new CancellationTokenSource();
-                    anaKuyruk = new BlockingCollection<string>(boundedCapacity: 500);
+                    anaKuyruk = new BlockingCollection<byte[]>(boundedCapacity: 500);
 
                     // DataReceived event'i bağla
                     serialPort1.DataReceived += serialPort1_DataReceived;
@@ -321,7 +332,7 @@ namespace LaviraSON
                 anaKuyruk?.CompleteAdding();
 
                 // Buffer'ı temizle (lock altında)
-                lock (anaBufferKilidi) { anaBuffer = ""; }
+                lock (anaBufferKilidi) { anaByteList.Clear(); }
             }
             catch (Exception ex) { Debug.WriteLine("Ana Bağlantı Kapama Hatası: " + ex.Message); }
         }
@@ -338,13 +349,13 @@ namespace LaviraSON
                 {
                     serialPortGorev.PortName = cmbGorevPort.Text;
                     serialPortGorev.BaudRate = Convert.ToInt32(cmbBaud.Text);
-                    serialPortGorev.DtrEnable = true;
-                    serialPortGorev.RtsEnable = true;
+                    serialPortGorev.DtrEnable = false;
+                    serialPortGorev.RtsEnable = false;
 
                     // Kuyruk ve token oluştur
                     gorevIptal = new CancellationTokenSource();
-                lock (gorevBufferKilidi) { gorevBuffer = ""; }
-                gorevKuyruk = new BlockingCollection<string>(new ConcurrentQueue<string>());
+                    lock (gorevBufferKilidi) { gorevByteList.Clear(); }
+                    gorevKuyruk = new BlockingCollection<byte[]>(boundedCapacity: 500);
 
                     // DataReceived event'i bağla
                     serialPortGorev.DataReceived += serialPortGorev_DataReceived;
@@ -378,7 +389,7 @@ namespace LaviraSON
                 if (serialPortGorev.IsOpen) serialPortGorev.Close();
                 gorevKuyruk?.CompleteAdding();
                 // Buffer'ı temizle (lock altında)
-                lock (gorevBufferKilidi) { gorevBuffer = ""; }
+                lock (gorevBufferKilidi) { gorevByteList.Clear(); }
             }
             catch (Exception ex) { Debug.WriteLine("Görev Bağlantı Kapama Hatası: " + ex.Message); }
         }
@@ -397,8 +408,8 @@ namespace LaviraSON
                     serialPortHakem.DataBits = 8;
                     serialPortHakem.Parity = Parity.None;
                     serialPortHakem.StopBits = StopBits.One;
-                    serialPortHakem.DtrEnable = true;
-                    serialPortHakem.RtsEnable = true;
+                    serialPortHakem.DtrEnable = false;
+                    serialPortHakem.RtsEnable = false;
                     serialPortHakem.Open();
 
                     btnHakemBaglan.Text = "KOPAR";
@@ -415,21 +426,25 @@ namespace LaviraSON
             }
             catch (Exception ex) { MessageBox.Show("Hakem Port Hatası: " + ex.Message); }
         }
+
         private void serialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             try
             {
                 if (!serialPort1.IsOpen) return;
 
-                string yeniVeri;
+                int bytesToRead = serialPort1.BytesToRead;
+                if (bytesToRead <= 0) return;
+
+                byte[] buffer = new byte[bytesToRead];
+                int bytesRead;
                 try
                 {
-                    yeniVeri = serialPort1.ReadExisting();
+                    bytesRead = serialPort1.Read(buffer, 0, bytesToRead);
                 }
                 catch (IOException ioEx)
                 {
-                    Debug.WriteLine("Ana Port IO Hatası (kablo kopmuş olabilir): " + ioEx.Message);
-                    // UI thread'ine geç ve bağlantıyı güvenle kapat
+                    Debug.WriteLine("Ana Port IO Hatası: " + ioEx.Message);
                     uiContext?.Post(_ =>
                     {
                         AnaGovdeBaglantiKapat();
@@ -450,36 +465,100 @@ namespace LaviraSON
                         btnBaglan.Text = "BAĞLAN";
                         btnBaglan.BackColor = Color.Green;
                         btnBaglan.ForeColor = Color.Black;
-                        MessageBox.Show("Ana porta erişim reddedildi! (USB çıkmış olabilir)", "Bağlantı Koptu",
+                        MessageBox.Show("Ana porta erişim reddedildi!", "Bağlantı Koptu",
                                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }, null);
                     return;
                 }
 
-                // OPT-1: Buffer'a erişim lock altında
+                if (bytesRead <= 0) return;
+
                 lock (anaBufferKilidi)
                 {
-                    anaBuffer += yeniVeri;
+                    for (int i = 0; i < bytesRead; i++)
+                        anaByteList.Add(buffer[i]);
 
-                    if (anaBuffer.Length > 2000)
+                    if (anaByteList.Count > 4000)
                     {
-                        Debug.WriteLine("ANA BUFFER TAŞTI, TEMİZLENDİ");
-                        anaBuffer = "";
+                        Debug.WriteLine("ANA BYTE BUFFER TAŞTI, TEMİZLENDİ");
+                        anaByteList.Clear();
                         return;
                     }
 
-                    int idx;
-                    while ((idx = anaBuffer.IndexOf('\n')) >= 0)
+                    // Paket Ayrıştırma: 
+                    // 1) Aviyonik UKB LoRa Paketi: Header = 0xAB, Boyut = 61 byte, Footer = 0x0D 0x0A
+                    // 2) Hakem Masası Formatı: Header = 0xFF 0xFF 0x54 0x52, Boyut = 78 byte
+                    while (anaByteList.Count >= 61)
                     {
-                        string satir = anaBuffer.Substring(0, idx).Trim();
-                        anaBuffer = anaBuffer.Substring(idx + 1);
-                        if (!string.IsNullOrEmpty(satir) && anaKuyruk != null && !anaKuyruk.IsAddingCompleted)
-                            anaKuyruk.Add(satir);
+                        int headerIdx = -1;
+                        int paketTipi = 0; // 1: 61-byte (0xAB), 2: 78-byte (Hakem)
+
+                        for (int i = 0; i < anaByteList.Count; i++)
+                        {
+                            if (anaByteList[i] == 0xAB)
+                            {
+                                headerIdx = i;
+                                paketTipi = 1;
+                                break;
+                            }
+                            if (i <= anaByteList.Count - 4 &&
+                                anaByteList[i] == 0xFF && anaByteList[i + 1] == 0xFF &&
+                                anaByteList[i + 2] == 0x54 && anaByteList[i + 3] == 0x52)
+                            {
+                                headerIdx = i;
+                                paketTipi = 2;
+                                break;
+                            }
+                        }
+
+                        if (headerIdx == -1)
+                        {
+                            if (anaByteList.Count > 3)
+                                anaByteList.RemoveRange(0, anaByteList.Count - 3);
+                            break;
+                        }
+
+                        if (headerIdx > 0)
+                        {
+                            anaByteList.RemoveRange(0, headerIdx);
+                        }
+
+                        int hedefBoyut = (paketTipi == 1) ? 61 : 78;
+                        if (anaByteList.Count < hedefBoyut)
+                            break;
+
+                        byte[] paket = anaByteList.GetRange(0, hedefBoyut).ToArray();
+                        anaByteList.RemoveRange(0, hedefBoyut);
+
+                        if (anaKuyruk != null && !anaKuyruk.IsAddingCompleted)
+                            anaKuyruk.Add(paket);
                     }
                 }
             }
-            catch (InvalidOperationException) { /* Kuyruk kapandı, normal sonlanma */ }
+            catch (InvalidOperationException) { /* Kuyruk kapandı */ }
             catch (Exception ex) { Debug.WriteLine("Ana DataReceived Hatası: " + ex.Message); }
+        }
+
+        private static string FloatToStr(float val)
+        {
+            return val.ToString(CultureInfo.InvariantCulture);
+        }
+
+        private static float ReadFloatBE(byte[] b, int offset)
+        {
+            if (offset + 4 > b.Length) return 0f;
+            byte[] temp = new byte[4];
+            temp[0] = b[offset + 3];
+            temp[1] = b[offset + 2];
+            temp[2] = b[offset + 1];
+            temp[3] = b[offset];
+            return BitConverter.ToSingle(temp, 0);
+        }
+
+        private static float ReadFloatLE(byte[] b, int offset)
+        {
+            if (offset + 4 > b.Length) return 0f;
+            return BitConverter.ToSingle(b, offset);
         }
 
         private void serialPortGorev_DataReceived(object sender, SerialDataReceivedEventArgs e)
@@ -488,14 +567,18 @@ namespace LaviraSON
             {
                 if (!serialPortGorev.IsOpen) return;
 
-                string yeniVeri;
+                int bytesToRead = serialPortGorev.BytesToRead;
+                if (bytesToRead <= 0) return;
+
+                byte[] buffer = new byte[bytesToRead];
+                int bytesRead;
                 try
                 {
-                    yeniVeri = serialPortGorev.ReadExisting();
+                    bytesRead = serialPortGorev.Read(buffer, 0, bytesToRead);
                 }
                 catch (IOException ioEx)
                 {
-                    Debug.WriteLine("Görev Port IO Hatası (kablo kopmuş olabilir): " + ioEx.Message);
+                    Debug.WriteLine("Görev Port IO Hatası: " + ioEx.Message);
                     uiContext?.Post(_ =>
                     {
                         GorevYukuBaglantiKapat();
@@ -516,67 +599,173 @@ namespace LaviraSON
                         btnGorevBaglan.Text = "BAĞLAN";
                         btnGorevBaglan.BackColor = Color.Green;
                         btnGorevBaglan.ForeColor = Color.Black;
-                        MessageBox.Show("Görev yükü portuna erişim reddedildi! (USB çıkmış olabilir)", "Bağlantı Koptu",
+                        MessageBox.Show("Görev yükü portuna erişim reddedildi!", "Bağlantı Koptu",
                                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }, null);
                     return;
                 }
 
+                if (bytesRead <= 0) return;
+
                 lock (gorevBufferKilidi)
                 {
-                    gorevBuffer += yeniVeri;
+                    for (int i = 0; i < bytesRead; i++)
+                        gorevByteList.Add(buffer[i]);
 
-                    if (gorevBuffer.Length > 2000)
+                    if (gorevByteList.Count > 4000)
                     {
-                        Debug.WriteLine("GÖREV BUFFER TAŞTI, TEMİZLENDİ");
-                        gorevBuffer = "";
+                        Debug.WriteLine("GÖREV BYTE BUFFER TAŞTI, TEMİZLENDİ");
+                        gorevByteList.Clear();
                         return;
                     }
 
-                    int idx;
-                    while ((idx = gorevBuffer.IndexOfAny(new char[] { '\n', '\r' })) >= 0)
+                    while (gorevByteList.Count >= 35)
                     {
-                        string satirHam = gorevBuffer.Substring(0, idx).Trim();
-                        // Substring ile alınan kısımdan sonrasını tut. Eğer \r\n yanyana ise, sonraki turda boş satır olarak atlanır.
-                        gorevBuffer = gorevBuffer.Substring(idx + 1);
+                        int headerIdx = -1;
+                        int paketTipi = 0; // 1: 35-byte (0xAA 0x55 STM32), 2: 38/78-byte (0xFF 0xFF 0x54 0x52)
 
-                        if (string.IsNullOrEmpty(satirHam)) continue;
-
-                        // YENİ FORMAT: FiltreX,FiltreY,FiltreZ,IvmeX,IvmeY,IvmeZ,Enlem,Boylam
-                        string[] alan = satirHam.Split(',');
-                        if (alan.Length < 8)
+                        for (int i = 0; i < gorevByteList.Count - 1; i++)
                         {
-                            Debug.WriteLine("Görev: Eksik alan, satır atlandı -> " + satirHam);
-                            continue;
+                            if (gorevByteList[i] == 0xAA && gorevByteList[i + 1] == 0x55)
+                            {
+                                headerIdx = i;
+                                paketTipi = 1;
+                                break;
+                            }
+                            if (i <= gorevByteList.Count - 4 &&
+                                gorevByteList[i] == 0xFF && gorevByteList[i + 1] == 0xFF &&
+                                gorevByteList[i + 2] == 0x54 && gorevByteList[i + 3] == 0x52)
+                            {
+                                headerIdx = i;
+                                paketTipi = 2;
+                                break;
+                            }
                         }
 
+                        if (headerIdx == -1)
+                        {
+                            if (gorevByteList.Count > 3)
+                                gorevByteList.RemoveRange(0, gorevByteList.Count - 3);
+                            break;
+                        }
+
+                        if (headerIdx > 0)
+                        {
+                            gorevByteList.RemoveRange(0, headerIdx);
+                        }
+
+                        int hedefBoyut = (paketTipi == 1) ? 35 : ((gorevByteList.Count >= 78) ? 78 : 38);
+                        if (gorevByteList.Count < hedefBoyut)
+                            break;
+
+                        byte[] paket = gorevByteList.GetRange(0, hedefBoyut).ToArray();
+                        gorevByteList.RemoveRange(0, hedefBoyut);
+
                         if (gorevKuyruk != null && !gorevKuyruk.IsAddingCompleted)
-                            gorevKuyruk.Add(satirHam);
+                            gorevKuyruk.Add(paket);
                     }
                 }
             }
-            catch (InvalidOperationException) { /* Kuyruk kapandı, normal sonlanma */ }
+            catch (InvalidOperationException) { /* Kuyruk kapandı */ }
             catch (Exception ex) { Debug.WriteLine("Görev DataReceived Hatası: " + ex.Message); }
         }
+
         private void AnaKuyrukIsleyici(CancellationToken token)
         {
             try
             {
-                foreach (string satir in anaKuyruk.GetConsumingEnumerable(token))
+                foreach (byte[] b in anaKuyruk.GetConsumingEnumerable(token))
                 {
-                    string[] ham = satir.Split(',');
-                    if (ham.Length < ANA_ALAN_MIN_UDP)
+                    if (b == null || b.Length < 61)
                     {
-                        Debug.WriteLine("Ana: Eksik paket atlandı. Alan: " + ham.Length);
+                        Debug.WriteLine("Ana: Eksik binary paket atlandı.");
                         continue;
                     }
 
-                    string[] p = ham.Length >= ANA_ALAN_SAYISI
-                        ? ham
-                        : AlanlariNormallestir(ham, ANA_ALAN_SAYISI);
+                    string[] p = new string[ANA_ALAN_SAYISI];
+                    for (int i = 0; i < p.Length; i++) p[i] = "0";
 
-                    string enlemStr = (5 < p.Length) ? p[5].Trim() : "NULL";
-                    string boylamStr = (6 < p.Length) ? p[6].Trim() : "NULL";
+                    if (b.Length == 61 && b[0] == 0xAB)
+                    {
+                        // =========================================================================
+                        // AVİYONİK UKB LORA 61-BYTE PAKET PARSE (Big-Endian Float32)
+                        // =========================================================================
+                        byte durumKodu = b[1];
+                        float irtifa = ReadFloatBE(b, 2);
+                        float hiz = ReadFloatBE(b, 6);
+                        float sicaklik = ReadFloatBE(b, 10);
+                        float gpsEnlem = ReadFloatBE(b, 14);
+                        float gpsBoylam = ReadFloatBE(b, 18);
+                        float pitch = ReadFloatBE(b, 22);
+                        float roll = ReadFloatBE(b, 26);
+                        float yaw = ReadFloatBE(b, 30);
+                        float basincMS = ReadFloatBE(b, 34);
+                        float basincBMP = ReadFloatBE(b, 38);
+                        float basincToplam = ReadFloatBE(b, 42);
+                        float ivmeX = ReadFloatBE(b, 46);
+                        float ivmeY = ReadFloatBE(b, 50);
+                        float ivmeZ = ReadFloatBE(b, 54);
+
+                        p[0] = durumKodu.ToString();
+                        p[1] = FloatToStr(irtifa);
+                        p[2] = FloatToStr(hiz);
+                        p[3] = FloatToStr(sicaklik);
+                        p[4] = "0";
+                        p[5] = FloatToStr(gpsEnlem);
+                        p[6] = FloatToStr(gpsBoylam);
+                        p[7] = FloatToStr(pitch);
+                        p[8] = FloatToStr(roll);
+                        p[9] = FloatToStr(yaw);
+                        p[10] = FloatToStr(basincMS);
+                        p[11] = FloatToStr(basincBMP);
+                        p[12] = FloatToStr(basincToplam);
+                        p[13] = FloatToStr(irtifa);
+                        p[20] = FloatToStr(ivmeX);
+                        p[21] = FloatToStr(ivmeY);
+                        p[22] = FloatToStr(ivmeZ);
+                        p[23] = FloatToStr(ivmeX);
+                        p[24] = FloatToStr(ivmeY);
+                        p[25] = FloatToStr(ivmeZ);
+                    }
+                    else if (b.Length >= 75)
+                    {
+                        // 78 byte standart Teknofest / Hakem paketi (Little-Endian Float32)
+                        byte durumKodu = b[74];
+                        float irtifa = ReadFloatLE(b, 6);
+                        float gpsIrtifa = ReadFloatLE(b, 10);
+                        float gpsEnlem = ReadFloatLE(b, 14);
+                        float gpsBoylam = ReadFloatLE(b, 18);
+                        float pitch = ReadFloatLE(b, 46);
+                        float roll = ReadFloatLE(b, 50);
+                        float yaw = ReadFloatLE(b, 54);
+                        float ivmeX = ReadFloatLE(b, 58);
+                        float ivmeY = ReadFloatLE(b, 62);
+                        float ivmeZ = ReadFloatLE(b, 66);
+
+                        p[0] = durumKodu.ToString();
+                        p[1] = FloatToStr(irtifa);
+                        p[2] = "0";
+                        p[3] = "0";
+                        p[4] = "0";
+                        p[5] = FloatToStr(gpsEnlem);
+                        p[6] = FloatToStr(gpsBoylam);
+                        p[7] = FloatToStr(pitch);
+                        p[8] = FloatToStr(roll);
+                        p[9] = FloatToStr(yaw);
+                        p[10] = "0";
+                        p[11] = "0";
+                        p[12] = "0";
+                        p[13] = FloatToStr(gpsIrtifa);
+                        p[20] = FloatToStr(ivmeX);
+                        p[21] = FloatToStr(ivmeY);
+                        p[22] = FloatToStr(ivmeZ);
+                        p[23] = FloatToStr(ivmeX);
+                        p[24] = FloatToStr(ivmeY);
+                        p[25] = FloatToStr(ivmeZ);
+                    }
+
+                    string enlemStr = p[5];
+                    string boylamStr = p[6];
 
                     if (!GpsGecerliMi(enlemStr, boylamStr))
                     {
@@ -601,15 +790,76 @@ namespace LaviraSON
         {
             try
             {
-                foreach (string satir in gorevKuyruk.GetConsumingEnumerable(token))
+                foreach (byte[] b in gorevKuyruk.GetConsumingEnumerable(token))
                 {
-                    string[] p = satir.Split(',');
-
-                    if (p.Length < 8)
+                    if (b == null || b.Length < 35)
                     {
-                        Debug.WriteLine("Görev: Eksik paket atlandı.");
+                        Debug.WriteLine("Görev: Eksik binary paket atlandı.");
                         continue;
                     }
+
+                    string[] p = new string[10];
+                    for (int i = 0; i < p.Length; i++) p[i] = "0";
+
+                    if (b.Length == 35 && b[0] == 0xAA && b[1] == 0x55)
+                    {
+                        // STM32 LoRa Binary Format: [0xAA][0x55][8xfloat32][XOR]
+                        // Sıra: hx, fx, hy, fy, hz, fz, lat, lon
+                        float hx = BitConverter.ToSingle(b, 2);
+                        float fx = BitConverter.ToSingle(b, 6);
+                        float hy = BitConverter.ToSingle(b, 10);
+                        float fy = BitConverter.ToSingle(b, 14);
+                        float hz = BitConverter.ToSingle(b, 18);
+                        float fz = BitConverter.ToSingle(b, 22);
+                        float gLat = BitConverter.ToSingle(b, 26);
+                        float gLon = BitConverter.ToSingle(b, 30);
+
+                        p[0] = FloatToStr(fx); // Filtreli X
+                        p[1] = FloatToStr(fy); // Filtreli Y
+                        p[2] = FloatToStr(fz); // Filtreli Z
+                        p[3] = FloatToStr(hx); // Ham Ivme X
+                        p[4] = FloatToStr(hy); // Ham Ivme Y
+                        p[5] = FloatToStr(hz); // Ham Ivme Z
+                        p[6] = FloatToStr(gLat); // Enlem
+                        p[7] = FloatToStr(gLon); // Boylam
+                    }
+                    else if (b.Length >= 78)
+                    {
+                        // 78 byte tam formatta gelmişse:
+                        // Byte 27-30 [26-29] -> Görev Enlem
+                        // Byte 31-34 [30-33] -> Görev Boylam
+                        // Byte 47-58 [46-57] -> Filtre/Gyro
+                        // Byte 59-70 [58-69] -> İvme
+                        float fX = BitConverter.ToSingle(b, 46);
+                        float fY = BitConverter.ToSingle(b, 50);
+                        float fZ = BitConverter.ToSingle(b, 54);
+                        float iX = BitConverter.ToSingle(b, 58);
+                        float iY = BitConverter.ToSingle(b, 62);
+                        float iZ = BitConverter.ToSingle(b, 66);
+                        float gLat = BitConverter.ToSingle(b, 26);
+                        float gLon = BitConverter.ToSingle(b, 30);
+
+                        p[0] = FloatToStr(fX);
+                        p[1] = FloatToStr(fY);
+                        p[2] = FloatToStr(fZ);
+                        p[3] = FloatToStr(iX);
+                        p[4] = FloatToStr(iY);
+                        p[5] = FloatToStr(iZ);
+                        p[6] = FloatToStr(gLat);
+                        p[7] = FloatToStr(gLon);
+                    }
+                    else
+                    {
+                        // 38 byte görev yükü formatı: Header(4) + 8 * 4 byte float = 36 byte (offset 4'ten başlar)
+                        // Sıra: FiltreX, FiltreY, FiltreZ, IvmeX, IvmeY, IvmeZ, Enlem, Boylam
+                        for (int i = 0; i < 8; i++)
+                        {
+                            float val = BitConverter.ToSingle(b, 4 + (i * 4));
+                            p[i] = FloatToStr(val);
+                        }
+                    }
+
+                    Interlocked.Increment(ref gorevPaketSayaci);
 
                     // 1. Ortak veri havuzunu güncelle
                     telemetriDurumu.GorevGuncelle(p);
@@ -761,6 +1011,8 @@ namespace LaviraSON
                 lblIvmeZ.Text = Get(5);            
                 if (lblGorevEnlem != null) lblGorevEnlem.Text = Get(6);
                 if (lblGorevBoylam != null) lblGorevBoylam.Text = Get(7);
+                if (lblGorevPaket != null) lblGorevPaket.Text = gorevPaketSayaci.ToString();
+                if (lblGÖREVPAKETNO != null && lblGÖREVPAKETNO != lblGorevPaket) lblGÖREVPAKETNO.Text = gorevPaketSayaci.ToString();
                 if (GpsGecerliMi(Get(6), Get(7)))
                 {
                     double gLat = DoubleParse(Get(6));
