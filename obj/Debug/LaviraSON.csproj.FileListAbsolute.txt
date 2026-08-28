@@ -43,10 +43,6 @@ C:\Users\HRN576\Desktop\Lavira Dosyalar\Lavira_AraYuz\LaviraSON\LaviraSON\obj\De
 C:\Users\HRN576\Desktop\Lavira Dosyalar\Lavira_AraYuz\LaviraSON\LaviraSON\obj\Debug\LaviraSON.csproj.Up2Date
 C:\Users\HRN576\Desktop\Lavira Dosyalar\Lavira_AraYuz\LaviraSON\LaviraSON\obj\Debug\LaviraSON.exe
 C:\Users\HRN576\Desktop\Lavira Dosyalar\Lavira_AraYuz\LaviraSON\LaviraSON\obj\Debug\LaviraSON.pdb
-C:\Users\HRN576\Desktop\Lavira Dosyalar\Lavira_AraYuz\LaviraSON\Lavira-UI-Main\obj\Debug\LaviraSON.csproj.AssemblyReference.cache
-C:\Users\HRN576\Desktop\Lavira Dosyalar\Lavira_AraYuz\LaviraSON\Lavira-UI-Main\obj\Debug\LaviraSON.Form1.resources
-C:\Users\HRN576\Desktop\Lavira Dosyalar\Lavira_AraYuz\LaviraSON\Lavira-UI-Main\obj\Debug\LaviraSON.Properties.Resources.resources
-C:\Users\HRN576\Desktop\Lavira Dosyalar\Lavira_AraYuz\LaviraSON\Lavira-UI-Main\obj\Debug\LaviraSON.csproj.GenerateResource.cache
 C:\Users\HRN576\Desktop\Lavira Dosyalar\Lavira_AraYuz\LaviraSON\Lavira-UI-Main\bin\Debug\LaviraSON.exe.config
 C:\Users\HRN576\Desktop\Lavira Dosyalar\Lavira_AraYuz\LaviraSON\Lavira-UI-Main\bin\Debug\LaviraSON.exe
 C:\Users\HRN576\Desktop\Lavira Dosyalar\Lavira_AraYuz\LaviraSON\Lavira-UI-Main\bin\Debug\LaviraSON.pdb
@@ -84,6 +80,10 @@ C:\Users\HRN576\Desktop\Lavira Dosyalar\Lavira_AraYuz\LaviraSON\Lavira-UI-Main\b
 C:\Users\HRN576\Desktop\Lavira Dosyalar\Lavira_AraYuz\LaviraSON\Lavira-UI-Main\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
 C:\Users\HRN576\Desktop\Lavira Dosyalar\Lavira_AraYuz\LaviraSON\Lavira-UI-Main\bin\Debug\System.Security.AccessControl.xml
 C:\Users\HRN576\Desktop\Lavira Dosyalar\Lavira_AraYuz\LaviraSON\Lavira-UI-Main\bin\Debug\System.Security.Principal.Windows.xml
+C:\Users\HRN576\Desktop\Lavira Dosyalar\Lavira_AraYuz\LaviraSON\Lavira-UI-Main\obj\Debug\LaviraSON.csproj.AssemblyReference.cache
+C:\Users\HRN576\Desktop\Lavira Dosyalar\Lavira_AraYuz\LaviraSON\Lavira-UI-Main\obj\Debug\LaviraSON.Form1.resources
+C:\Users\HRN576\Desktop\Lavira Dosyalar\Lavira_AraYuz\LaviraSON\Lavira-UI-Main\obj\Debug\LaviraSON.Properties.Resources.resources
+C:\Users\HRN576\Desktop\Lavira Dosyalar\Lavira_AraYuz\LaviraSON\Lavira-UI-Main\obj\Debug\LaviraSON.csproj.GenerateResource.cache
 C:\Users\HRN576\Desktop\Lavira Dosyalar\Lavira_AraYuz\LaviraSON\Lavira-UI-Main\obj\Debug\LaviraSON.csproj.CoreCompileInputs.cache
 C:\Users\HRN576\Desktop\Lavira Dosyalar\Lavira_AraYuz\LaviraSON\Lavira-UI-Main\obj\Debug\LaviraSON.csproj.Up2Date
 C:\Users\HRN576\Desktop\Lavira Dosyalar\Lavira_AraYuz\LaviraSON\Lavira-UI-Main\obj\Debug\LaviraSON.exe
