@@ -36,7 +36,7 @@
               "RelativeDocumentMoniker": "Form1.cs",
               "ToolTip": "C:\\Users\\HRN576\\Desktop\\Lavira Dosyalar\\Lavira_AraYuz\\LaviraSON\\Lavira-UI-Main\\Form1.cs",
               "RelativeToolTip": "Form1.cs",
-              "ViewState": "AgIAAF4AAAAAAAAAAADwv2IAAAAKAAAAAAAAAA==",
+              "ViewState": "AgIAAF4AAAAAAAAAAADwv2IAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-20T10:12:42.742Z",
               "EditorCaption": ""
@@ -63,8 +63,7 @@
               "RelativeToolTip": "TelemetriDurumu.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-16T13:05:38.391Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-07-16T13:05:38.391Z"
             },
             {
               "$type": "Document",
@@ -76,8 +75,7 @@
               "RelativeToolTip": "HakemPaketleyici.cs",
               "ViewState": "AgIAADIAAAAAAAAAAAAmwBcAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-20T10:12:51.36Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-20T10:12:51.36Z"
             }
           ]
         }

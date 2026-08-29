@@ -191,7 +191,8 @@ namespace LaviraSON
             {
                 gMapControl1.MapProvider = GMapProviders.GoogleSatelliteMap;
                 GMaps.Instance.Mode = AccessMode.ServerAndCache;
-                gMapControl1.CacheLocation = Path.Combine(appDir, "HaritaDepo");
+                string aksarayDepo = Path.Combine(appDir, "HaritaDepo", "Aksaray Atış Alanı");
+                gMapControl1.CacheLocation = Directory.Exists(aksarayDepo) ? aksarayDepo : Path.Combine(appDir, "HaritaDepo");
                 gMapControl1.Position = new PointLatLng(40.743336617541964, 29.941275119807784);
                 gMapControl1.MinZoom = 5; gMapControl1.MaxZoom = 20; gMapControl1.Zoom = 13;
                 gMapControl1.ShowCenter = false; gMapControl1.DragButton = MouseButtons.Left;
@@ -1126,6 +1127,77 @@ namespace LaviraSON
             if (cmbGorevPort != null) cmbGorevPort.Items.AddRange(portlar);
             if (cmbHakemPort != null) cmbHakemPort.Items.AddRange(portlar);
             if (cmbPorts.Items.Count > 0) cmbPorts.SelectedIndex = 0;
+        }
+
+        private void lblHaritaYukle_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // 1. Haritayı Aksaray Atış Alanı koordinatına odakla
+                PointLatLng aksarayMerkez = new PointLatLng(38.5630, 33.4150);
+                gMapControl1.Position = aksarayMerkez;
+                gMapControl1.Zoom = 13;
+                gMapControl1.Refresh();
+
+                // 2. Onay dialogu
+                DialogResult dr = MessageBox.Show(
+                    "Harita Aksaray Atış Alanı (38.5630, 33.4150) konumuna odaklandı.\n\n" +
+                    "Tüm atış ve kurtarma bölgesi (Zoom 8 ile 17 arası) tek parça '.gmdb' veritabanına önbelleğe alınsın mı?\n\n" +
+                    "(İndirme internet hızınıza bağlı olarak 1-2 dakika sürebilir)",
+                    "Aksaray Harita Önbellekleme",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question
+                );
+
+                if (dr != DialogResult.Yes) return;
+
+                // 3. Atış ve kurtarma koridoru alanı (~35km x ~35km Bounding Box)
+                RectLatLng alan = RectLatLng.FromLTRB(33.20, 38.72, 33.63, 38.40);
+                int minZoom = 8;
+                int maxZoom = 17;
+                int tumSeviyeler = maxZoom - minZoom; // Zoom 8'den 17'ye kadar tüm seviyeleri indirir
+
+                // 4. GMap.NET yerel TilePrefetcher motoru (Kompakt .gmdb SQLite veritabanına yazar, dışarıya resim çıkarmaz)
+                using (TilePrefetcher prefetcher = new TilePrefetcher())
+                {
+                    prefetcher.ShowCompleteMessage = false;
+                    prefetcher.Text = "Aksaray Atış Alanı Haritası İndiriliyor (Zoom 8-17)";
+                    prefetcher.Start(alan, maxZoom, gMapControl1.MapProvider, 10, tumSeviyeler);
+                }
+
+                // 5. İndirilen veritabanını "Aksaray Atış Alanı" klasörüne yedekle
+                try
+                {
+                    string kaynakGmdb = Path.Combine(appDir, "HaritaDepo", "TileDBv5", "en", "Data.gmdb");
+                    string hedefKlasor = Path.Combine(appDir, "HaritaDepo", "Aksaray Atış Alanı", "TileDBv5", "en");
+                    if (File.Exists(kaynakGmdb))
+                    {
+                        if (!Directory.Exists(hedefKlasor))
+                        {
+                            Directory.CreateDirectory(hedefKlasor);
+                        }
+                        string hedefGmdb = Path.Combine(hedefKlasor, "Data.gmdb");
+                        File.Copy(kaynakGmdb, hedefGmdb, true);
+                        Debug.WriteLine("[HARITA CACHE] Aksaray Atış Alanı klasörüne yedeklendi: " + hedefGmdb);
+                    }
+                }
+                catch (Exception kopyaEx)
+                {
+                    Debug.WriteLine("[HARITA CACHE KOPYALAMA]: " + kopyaEx.Message);
+                }
+
+                MessageBox.Show(
+                    "Aksaray Atış Alanı haritası (Zoom 8-17) '.gmdb' veritabanına başarıyla kaydedildi!\n\n" +
+                    "Artık sahada hiç internet olmasa bile harita eksiksiz ve yüksek çözünürlükle açılacaktır.",
+                    "Önbellekleme Başarılı",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Harita yükleme sırasında hata oluştu: " + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void Grafik_DoubleClick(object sender, EventArgs e)

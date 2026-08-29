@@ -1333,6 +1333,7 @@ namespace LaviraSON
             this.lblHaritaYukle.TabIndex = 10;
             this.lblHaritaYukle.Text = "Harita Yükle";
             this.lblHaritaYukle.UseVisualStyleBackColor = true;
+            this.lblHaritaYukle.Click += new System.EventHandler(this.lblHaritaYukle_Click);
             // 
             // Form1
             // 
