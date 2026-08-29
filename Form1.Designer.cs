@@ -85,9 +85,6 @@ namespace LaviraSON
             this.lblAnaHiz = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.lblAnaSicaklik = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.lblPaketNo = new System.Windows.Forms.Label();
-            this.lblPaket = new System.Windows.Forms.Label();
             this.lblGpsEnlem = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
@@ -110,25 +107,29 @@ namespace LaviraSON
             this.lblBasincBMP = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.lblBasincToplam = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.lblGFiltreX = new System.Windows.Forms.Label();
-            this.label33 = new System.Windows.Forms.Label();
-            this.lblGFiltreY = new System.Windows.Forms.Label();
-            this.label57 = new System.Windows.Forms.Label();
-            this.lblGFiltreZ = new System.Windows.Forms.Label();
-            this.label25 = new System.Windows.Forms.Label();
-            this.lblIvmeX = new System.Windows.Forms.Label();
-            this.label27 = new System.Windows.Forms.Label();
-            this.lblIvmeY = new System.Windows.Forms.Label();
-            this.label29 = new System.Windows.Forms.Label();
-            this.lblIvmeZ = new System.Windows.Forms.Label();
+            this.lblGorevPaketNo = new System.Windows.Forms.Label();
+            this.lblGorevPaket = new System.Windows.Forms.Label();
             this.label49 = new System.Windows.Forms.Label();
             this.label47 = new System.Windows.Forms.Label();
             this.lblGorevBoylam = new System.Windows.Forms.Label();
             this.lblGorevEnlem = new System.Windows.Forms.Label();
-            this.lblGorevPaketNo = new System.Windows.Forms.Label();
-            this.lblGorevPaket = new System.Windows.Forms.Label();
+            this.lblIvmeZ = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.lblIvmeY = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
+            this.lblIvmeX = new System.Windows.Forms.Label();
+            this.lblGFiltreZ = new System.Windows.Forms.Label();
+            this.label57 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
+            this.lblGFiltreY = new System.Windows.Forms.Label();
+            this.lblGFiltreX = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.lblPaketNo = new System.Windows.Forms.Label();
+            this.lblPaket = new System.Windows.Forms.Label();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
+            this.lblHaritaYukle = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tblGrafikPaneli.SuspendLayout();
@@ -453,6 +454,7 @@ namespace LaviraSON
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.lblHaritaYukle);
             this.groupBox1.Controls.Add(this.btnPortYenile);
             this.groupBox1.Controls.Add(this.cmbHakemPort);
             this.groupBox1.Controls.Add(this.btnGorevBaglan);
@@ -786,43 +788,6 @@ namespace LaviraSON
             this.lblAnaSicaklik.Text = "0000";
             this.lblAnaSicaklik.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label5.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.label5.Location = new System.Drawing.Point(3, 396);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(180, 18);
-            this.label5.TabIndex = 4;
-            this.label5.Text = "GÖREV YÜKÜ VERİLERİ:";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblPaketNo
-            // 
-            this.lblPaketNo.AutoSize = true;
-            this.lblPaketNo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblPaketNo.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.lblPaketNo.Location = new System.Drawing.Point(3, 352);
-            this.lblPaketNo.Name = "lblPaketNo";
-            this.lblPaketNo.Size = new System.Drawing.Size(87, 18);
-            this.lblPaketNo.TabIndex = 0;
-            this.lblPaketNo.Text = "PAKET NO:";
-            this.lblPaketNo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblPaket
-            // 
-            this.lblPaket.AutoSize = true;
-            this.lblPaket.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPaket.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblPaket.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.lblPaket.Location = new System.Drawing.Point(215, 352);
-            this.lblPaket.Name = "lblPaket";
-            this.lblPaket.Size = new System.Drawing.Size(169, 22);
-            this.lblPaket.TabIndex = 1;
-            this.lblPaket.Text = "0000";
-            this.lblPaket.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // lblGpsEnlem
             // 
             this.lblGpsEnlem.AutoSize = true;
@@ -1098,155 +1063,30 @@ namespace LaviraSON
             this.lblBasincToplam.Text = "0000";
             this.lblBasincToplam.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label16
+            // lblGorevPaketNo
             // 
-            this.label16.AutoSize = true;
-            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label16.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.label16.Location = new System.Drawing.Point(3, 418);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(134, 18);
-            this.label16.TabIndex = 70;
-            this.label16.Text = "GÖREV FİLTRE X:";
-            this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblGorevPaketNo.AutoSize = true;
+            this.lblGorevPaketNo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblGorevPaketNo.ForeColor = System.Drawing.SystemColors.Desktop;
+            this.lblGorevPaketNo.Location = new System.Drawing.Point(3, 594);
+            this.lblGorevPaketNo.Name = "lblGorevPaketNo";
+            this.lblGorevPaketNo.Size = new System.Drawing.Size(145, 18);
+            this.lblGorevPaketNo.TabIndex = 50;
+            this.lblGorevPaketNo.Text = "GÖREV PAKET NO:";
+            this.lblGorevPaketNo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // lblGFiltreX
+            // lblGorevPaket
             // 
-            this.lblGFiltreX.AutoSize = true;
-            this.lblGFiltreX.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblGFiltreX.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblGFiltreX.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.lblGFiltreX.Location = new System.Drawing.Point(215, 418);
-            this.lblGFiltreX.Name = "lblGFiltreX";
-            this.lblGFiltreX.Size = new System.Drawing.Size(169, 22);
-            this.lblGFiltreX.TabIndex = 71;
-            this.lblGFiltreX.Text = "0000";
-            this.lblGFiltreX.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label33.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.label33.Location = new System.Drawing.Point(3, 440);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(133, 18);
-            this.label33.TabIndex = 32;
-            this.label33.Text = "GÖREV FİLTRE Y:";
-            this.label33.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblGFiltreY
-            // 
-            this.lblGFiltreY.AutoSize = true;
-            this.lblGFiltreY.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblGFiltreY.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblGFiltreY.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.lblGFiltreY.Location = new System.Drawing.Point(215, 440);
-            this.lblGFiltreY.Name = "lblGFiltreY";
-            this.lblGFiltreY.Size = new System.Drawing.Size(169, 22);
-            this.lblGFiltreY.TabIndex = 33;
-            this.lblGFiltreY.Text = "0000";
-            this.lblGFiltreY.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label57
-            // 
-            this.label57.AutoSize = true;
-            this.label57.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label57.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.label57.Location = new System.Drawing.Point(3, 462);
-            this.label57.Name = "label57";
-            this.label57.Size = new System.Drawing.Size(133, 18);
-            this.label57.TabIndex = 60;
-            this.label57.Text = "GÖREV FİLTRE Z:";
-            this.label57.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblGFiltreZ
-            // 
-            this.lblGFiltreZ.AutoSize = true;
-            this.lblGFiltreZ.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblGFiltreZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblGFiltreZ.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.lblGFiltreZ.Location = new System.Drawing.Point(215, 462);
-            this.lblGFiltreZ.Name = "lblGFiltreZ";
-            this.lblGFiltreZ.Size = new System.Drawing.Size(169, 22);
-            this.lblGFiltreZ.TabIndex = 57;
-            this.lblGFiltreZ.Text = "0000";
-            this.lblGFiltreZ.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label25.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.label25.Location = new System.Drawing.Point(3, 484);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(119, 18);
-            this.label25.TabIndex = 24;
-            this.label25.Text = "GÖREV İVME X:";
-            this.label25.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblIvmeX
-            // 
-            this.lblIvmeX.AutoSize = true;
-            this.lblIvmeX.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblIvmeX.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblIvmeX.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.lblIvmeX.Location = new System.Drawing.Point(215, 484);
-            this.lblIvmeX.Name = "lblIvmeX";
-            this.lblIvmeX.Size = new System.Drawing.Size(169, 22);
-            this.lblIvmeX.TabIndex = 25;
-            this.lblIvmeX.Text = "0000";
-            this.lblIvmeX.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label27.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.label27.Location = new System.Drawing.Point(3, 506);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(118, 18);
-            this.label27.TabIndex = 26;
-            this.label27.Text = "GÖREV İVME Y:";
-            this.label27.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblIvmeY
-            // 
-            this.lblIvmeY.AutoSize = true;
-            this.lblIvmeY.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblIvmeY.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblIvmeY.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.lblIvmeY.Location = new System.Drawing.Point(215, 506);
-            this.lblIvmeY.Name = "lblIvmeY";
-            this.lblIvmeY.Size = new System.Drawing.Size(169, 22);
-            this.lblIvmeY.TabIndex = 27;
-            this.lblIvmeY.Text = "0000";
-            this.lblIvmeY.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label29
-            // 
-            this.label29.AutoSize = true;
-            this.label29.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label29.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.label29.Location = new System.Drawing.Point(3, 528);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(118, 18);
-            this.label29.TabIndex = 28;
-            this.label29.Text = "GÖREV İVME Z:";
-            this.label29.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblIvmeZ
-            // 
-            this.lblIvmeZ.AutoSize = true;
-            this.lblIvmeZ.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblIvmeZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblIvmeZ.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.lblIvmeZ.Location = new System.Drawing.Point(215, 528);
-            this.lblIvmeZ.Name = "lblIvmeZ";
-            this.lblIvmeZ.Size = new System.Drawing.Size(169, 22);
-            this.lblIvmeZ.TabIndex = 29;
-            this.lblIvmeZ.Text = "0000";
-            this.lblIvmeZ.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblGorevPaket.AutoSize = true;
+            this.lblGorevPaket.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblGorevPaket.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblGorevPaket.ForeColor = System.Drawing.SystemColors.Desktop;
+            this.lblGorevPaket.Location = new System.Drawing.Point(215, 594);
+            this.lblGorevPaket.Name = "lblGorevPaket";
+            this.lblGorevPaket.Size = new System.Drawing.Size(169, 22);
+            this.lblGorevPaket.TabIndex = 51;
+            this.lblGorevPaket.Text = "0000";
+            this.lblGorevPaket.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label49
             // 
@@ -1298,30 +1138,201 @@ namespace LaviraSON
             this.lblGorevEnlem.Text = "0000";
             this.lblGorevEnlem.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // lblGorevPaketNo
+            // lblIvmeZ
             // 
-            this.lblGorevPaketNo.AutoSize = true;
-            this.lblGorevPaketNo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblGorevPaketNo.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.lblGorevPaketNo.Location = new System.Drawing.Point(3, 594);
-            this.lblGorevPaketNo.Name = "lblGorevPaketNo";
-            this.lblGorevPaketNo.Size = new System.Drawing.Size(145, 18);
-            this.lblGorevPaketNo.TabIndex = 50;
-            this.lblGorevPaketNo.Text = "GÖREV PAKET NO:";
-            this.lblGorevPaketNo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblIvmeZ.AutoSize = true;
+            this.lblIvmeZ.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblIvmeZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblIvmeZ.ForeColor = System.Drawing.SystemColors.Desktop;
+            this.lblIvmeZ.Location = new System.Drawing.Point(215, 528);
+            this.lblIvmeZ.Name = "lblIvmeZ";
+            this.lblIvmeZ.Size = new System.Drawing.Size(169, 22);
+            this.lblIvmeZ.TabIndex = 29;
+            this.lblIvmeZ.Text = "0000";
+            this.lblIvmeZ.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // lblGorevPaket
+            // label29
             // 
-            this.lblGorevPaket.AutoSize = true;
-            this.lblGorevPaket.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblGorevPaket.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblGorevPaket.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.lblGorevPaket.Location = new System.Drawing.Point(215, 594);
-            this.lblGorevPaket.Name = "lblGorevPaket";
-            this.lblGorevPaket.Size = new System.Drawing.Size(169, 22);
-            this.lblGorevPaket.TabIndex = 51;
-            this.lblGorevPaket.Text = "0000";
-            this.lblGorevPaket.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label29.AutoSize = true;
+            this.label29.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label29.ForeColor = System.Drawing.SystemColors.Desktop;
+            this.label29.Location = new System.Drawing.Point(3, 528);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(118, 18);
+            this.label29.TabIndex = 28;
+            this.label29.Text = "GÖREV İVME Z:";
+            this.label29.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label27.ForeColor = System.Drawing.SystemColors.Desktop;
+            this.label27.Location = new System.Drawing.Point(3, 506);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(118, 18);
+            this.label27.TabIndex = 26;
+            this.label27.Text = "GÖREV İVME Y:";
+            this.label27.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblIvmeY
+            // 
+            this.lblIvmeY.AutoSize = true;
+            this.lblIvmeY.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblIvmeY.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblIvmeY.ForeColor = System.Drawing.SystemColors.Desktop;
+            this.lblIvmeY.Location = new System.Drawing.Point(215, 506);
+            this.lblIvmeY.Name = "lblIvmeY";
+            this.lblIvmeY.Size = new System.Drawing.Size(169, 22);
+            this.lblIvmeY.TabIndex = 27;
+            this.lblIvmeY.Text = "0000";
+            this.lblIvmeY.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label25.ForeColor = System.Drawing.SystemColors.Desktop;
+            this.label25.Location = new System.Drawing.Point(3, 484);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(119, 18);
+            this.label25.TabIndex = 24;
+            this.label25.Text = "GÖREV İVME X:";
+            this.label25.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblIvmeX
+            // 
+            this.lblIvmeX.AutoSize = true;
+            this.lblIvmeX.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblIvmeX.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblIvmeX.ForeColor = System.Drawing.SystemColors.Desktop;
+            this.lblIvmeX.Location = new System.Drawing.Point(215, 484);
+            this.lblIvmeX.Name = "lblIvmeX";
+            this.lblIvmeX.Size = new System.Drawing.Size(169, 22);
+            this.lblIvmeX.TabIndex = 25;
+            this.lblIvmeX.Text = "0000";
+            this.lblIvmeX.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblGFiltreZ
+            // 
+            this.lblGFiltreZ.AutoSize = true;
+            this.lblGFiltreZ.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblGFiltreZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblGFiltreZ.ForeColor = System.Drawing.SystemColors.Desktop;
+            this.lblGFiltreZ.Location = new System.Drawing.Point(215, 462);
+            this.lblGFiltreZ.Name = "lblGFiltreZ";
+            this.lblGFiltreZ.Size = new System.Drawing.Size(169, 22);
+            this.lblGFiltreZ.TabIndex = 57;
+            this.lblGFiltreZ.Text = "0000";
+            this.lblGFiltreZ.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label57
+            // 
+            this.label57.AutoSize = true;
+            this.label57.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label57.ForeColor = System.Drawing.SystemColors.Desktop;
+            this.label57.Location = new System.Drawing.Point(3, 462);
+            this.label57.Name = "label57";
+            this.label57.Size = new System.Drawing.Size(133, 18);
+            this.label57.TabIndex = 60;
+            this.label57.Text = "GÖREV FİLTRE Z:";
+            this.label57.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label33.ForeColor = System.Drawing.SystemColors.Desktop;
+            this.label33.Location = new System.Drawing.Point(3, 440);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(133, 18);
+            this.label33.TabIndex = 32;
+            this.label33.Text = "GÖREV FİLTRE Y:";
+            this.label33.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblGFiltreY
+            // 
+            this.lblGFiltreY.AutoSize = true;
+            this.lblGFiltreY.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblGFiltreY.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblGFiltreY.ForeColor = System.Drawing.SystemColors.Desktop;
+            this.lblGFiltreY.Location = new System.Drawing.Point(215, 440);
+            this.lblGFiltreY.Name = "lblGFiltreY";
+            this.lblGFiltreY.Size = new System.Drawing.Size(169, 22);
+            this.lblGFiltreY.TabIndex = 33;
+            this.lblGFiltreY.Text = "0000";
+            this.lblGFiltreY.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblGFiltreX
+            // 
+            this.lblGFiltreX.AutoSize = true;
+            this.lblGFiltreX.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblGFiltreX.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblGFiltreX.ForeColor = System.Drawing.SystemColors.Desktop;
+            this.lblGFiltreX.Location = new System.Drawing.Point(215, 418);
+            this.lblGFiltreX.Name = "lblGFiltreX";
+            this.lblGFiltreX.Size = new System.Drawing.Size(169, 22);
+            this.lblGFiltreX.TabIndex = 71;
+            this.lblGFiltreX.Text = "0000";
+            this.lblGFiltreX.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label16.ForeColor = System.Drawing.SystemColors.Desktop;
+            this.label16.Location = new System.Drawing.Point(3, 418);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(134, 18);
+            this.label16.TabIndex = 70;
+            this.label16.Text = "GÖREV FİLTRE X:";
+            this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label5.ForeColor = System.Drawing.SystemColors.Desktop;
+            this.label5.Location = new System.Drawing.Point(3, 396);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(180, 18);
+            this.label5.TabIndex = 4;
+            this.label5.Text = "GÖREV YÜKÜ VERİLERİ:";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblPaketNo
+            // 
+            this.lblPaketNo.AutoSize = true;
+            this.lblPaketNo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblPaketNo.ForeColor = System.Drawing.SystemColors.Desktop;
+            this.lblPaketNo.Location = new System.Drawing.Point(3, 352);
+            this.lblPaketNo.Name = "lblPaketNo";
+            this.lblPaketNo.Size = new System.Drawing.Size(87, 18);
+            this.lblPaketNo.TabIndex = 0;
+            this.lblPaketNo.Text = "PAKET NO:";
+            this.lblPaketNo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblPaket
+            // 
+            this.lblPaket.AutoSize = true;
+            this.lblPaket.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblPaket.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblPaket.ForeColor = System.Drawing.SystemColors.Desktop;
+            this.lblPaket.Location = new System.Drawing.Point(215, 352);
+            this.lblPaket.Name = "lblPaket";
+            this.lblPaket.Size = new System.Drawing.Size(169, 22);
+            this.lblPaket.TabIndex = 1;
+            this.lblPaket.Text = "0000";
+            this.lblPaket.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblHaritaYukle
+            // 
+            this.lblHaritaYukle.Location = new System.Drawing.Point(247, 159);
+            this.lblHaritaYukle.Name = "lblHaritaYukle";
+            this.lblHaritaYukle.Size = new System.Drawing.Size(115, 22);
+            this.lblHaritaYukle.TabIndex = 10;
+            this.lblHaritaYukle.Text = "Harita Yükle";
+            this.lblHaritaYukle.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -1396,7 +1407,6 @@ namespace LaviraSON
         private System.Windows.Forms.Label label47;
         private System.Windows.Forms.Label lblGorevPaketNo;
         private System.Windows.Forms.Label lblGorevPaket;
-        private System.Windows.Forms.Label lblGÖREVPAKETNO;
         private System.Windows.Forms.Label lblYaw;
         private System.Windows.Forms.Label label39;
         private System.Windows.Forms.Label lblRoll;
@@ -1444,6 +1454,7 @@ namespace LaviraSON
         private System.Windows.Forms.TableLayoutPanel tblGrafikPaneli;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
+        private System.Windows.Forms.Button lblHaritaYukle;
     }
 }
 

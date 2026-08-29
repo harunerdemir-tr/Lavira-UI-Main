@@ -18,13 +18,11 @@ namespace LaviraSON
         public DurumSesiYoneticisi()
         {
             sesKlasoru = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Sesler");
-
-            // STM32 gömülü durum kodlarıyla birebir eşleşen ses dosyaları:
             sesDosyalari = new Dictionary<int, string>
             {
                 { 0, "Bağlantı Kuruldu .mp3" },
                 { 1, "Yükseliyor.mp3" },
-                // 2 (Motor Yanma Sonu) ve 3 (Süzülme) için ses çalınmaz
+                // 2 (Motor Yanma Sonu) ve 3 (Süzülme) için ses çalınmayacak
                 { 4, "Birinci ayrılma gerç.mp3" },
                 { 5, "ikinci ayrılma gerçe.mp3" },
                 { 6, "İniş yapıldı Görev B.mp3" } 
@@ -54,9 +52,7 @@ namespace LaviraSON
                     Debug.WriteLine($"Ses dosyası bulunamadı: {dosyaYolu}");
                     return;
                 }
-
                 SesiDurdur();
-
                 lock (kilit)
                 {
                     outputDevice = new WaveOutEvent();
@@ -71,32 +67,23 @@ namespace LaviraSON
                 SesiDurdur();
             }
         }
-
         private void SesiDurdur()
         {
-            try
+            lock (kilit)
             {
-                lock (kilit)
+                if (outputDevice != null)
                 {
-                    if (outputDevice != null)
-                    {
-                        outputDevice.Stop();
-                        outputDevice.Dispose();
-                        outputDevice = null;
-                    }
-                    if (audioFile != null)
-                    {
-                        audioFile.Dispose();
-                        audioFile = null;
-                    }
+                    try { outputDevice.Stop(); } catch { }
+                    outputDevice.Dispose();
+                    outputDevice = null;
+                }
+                if (audioFile != null)
+                {
+                    audioFile.Dispose();
+                    audioFile = null;
                 }
             }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"SesiDurdur hatası: {ex.Message}");
-            }
         }
-
         public void Dispose()
         {
             SesiDurdur();
