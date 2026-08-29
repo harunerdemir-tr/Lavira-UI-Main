@@ -62,8 +62,8 @@ namespace LaviraSON
         SerialPort serialPortGorev = new SerialPort();
         SerialPort serialPortHakem = new SerialPort();
 
-        double RampaEnlem = 0, RampaBoylam = 0;
-        bool RampaKaydedildi = false;
+        double RampaEnlem = 40.743336617541964, RampaBoylam = 29.941275119807784;
+        bool RampaKaydedildi = true;
 
         private readonly string appDir = AppDomain.CurrentDomain.BaseDirectory;
         private readonly TelemetriDurumu telemetriDurumu = new TelemetriDurumu();
@@ -266,12 +266,14 @@ namespace LaviraSON
                 lblGorevMesafe.ForeColor = Color.MidnightBlue;
                 lblGorevMesafe.Font = new Font("Arial", 13, FontStyle.Bold);
                 lblGorevMesafe.AutoSize = true;
-                lblGorevMesafe.Text = "GÖREV MESAFESİ: 0 m";
-                lblGorevMesafe.Visible = true;
+                lblGorevMesafe.Text = "";
+                lblGorevMesafe.Visible = false;
             }
 
             gMapControl1.MouseDoubleClick += gMapControl1_MouseDoubleClick;
-            _ = OtomatikRampaKonumuAl();
+
+            // Başlangıçta varsayılan olarak harita ve imleçler yüklenir
+            RampaHaritadaGuncelle();
         }
 
         private void btnBaglan_Click(object sender, EventArgs e)
@@ -858,35 +860,56 @@ namespace LaviraSON
                     double lat = DoubleParse(Get(5));
                     double lng = DoubleParse(Get(6));
 
-                    // OPT-4: Marker pozisyonunu her pakette güncelle (hafif işlem).
-                    // Refresh() ise 10 Hz ile sınırlandırıldı.
+                    // Önce mesafe kontrolü yapılır (Absürt mesafe koruması)
+                    if (RampaKaydedildi)
+                    {
+                        double mesafe = HesaplaMesafe(RampaEnlem, RampaBoylam, lat, lng);
+                        if (mesafe > 41000)
+                        {
+                            return; // 41 km'den uzak absürt koordinat reddedildi, harita güncellenmez!
+                        }
+
+                        lblMesafe.Visible = true;
+                        lblMesafe.Text = "Mesafe: " + mesafe.ToString("F0") + " m";
+                        lblMesafe.Location = new Point(15, 15); 
+                        lblMesafe.BringToFront(); 
+
+                        if (lblGorevMesafe != null)
+                        {
+                            if (int.TryParse(Get(0), out int st) && st < 5)
+                            {
+                                lblGorevMesafe.Visible = true;
+                                lblGorevMesafe.Text = "GÖREV MESAFESİ: " + mesafe.ToString("F0") + " m";
+                                lblGorevMesafe.Location = new Point(15, 45);
+                                lblGorevMesafe.BringToFront();
+                            }
+                        }
+                    }
+
+                    // Mesafe geçerliyse marker ve rota güncellenir
                     roketIgnesi.Position = new PointLatLng(lat, lng);
                     
                     // Görev Yükü roketten ayrılana kadar roketle beraber hareket etsin ve görünür olsun.
-                    if (int.TryParse(Get(0), out int geciciDurum) && geciciDurum < 4)
+                    if (int.TryParse(Get(0), out int geciciDurum) && geciciDurum < 5)
                     {
                         gorevIgnesi.Position = roketIgnesi.Position;
                         if (!gorevIgnesi.IsVisible) gorevIgnesi.IsVisible = true;
 
-                        katman.Routes.Remove(gorevYolu);
                         gorevYolu.Points.Clear();
                         if (RampaKaydedildi)
                         {
                             gorevYolu.Points.Add(new PointLatLng(RampaEnlem, RampaBoylam));
                             gorevYolu.Points.Add(new PointLatLng(lat, lng));
                         }
-                        katman.Routes.Add(gorevYolu);
                         gMapControl1.UpdateRouteLocalPosition(gorevYolu);
                     }
 
-                    katman.Routes.Remove(roketYolu);
                     roketYolu.Points.Clear();
                     if (RampaKaydedildi)
                     {
                         roketYolu.Points.Add(new PointLatLng(RampaEnlem, RampaBoylam));
                         roketYolu.Points.Add(new PointLatLng(lat, lng));
                     }
-                    katman.Routes.Add(roketYolu);
                     gMapControl1.UpdateRouteLocalPosition(roketYolu);
 
                     // OPT-4: 10 Hz harita güncelleme limiti
@@ -895,39 +918,6 @@ namespace LaviraSON
                     {
                         sonHaritaGuncelleme = simdi;
                         gMapControl1.Refresh();
-                    }
-
-                    if (RampaKaydedildi)
-                    {
-                        double mesafe = HesaplaMesafe(RampaEnlem, RampaBoylam, lat, lng);
-                        if (mesafe > 41000)
-                        {
-                            Debug.WriteLine($"[MESAFE KORUMASI] Absürt mesafe reddedildi: {mesafe:F0} m");
-                            return; // Çıkış yap, işlem hatali
-                        }
-
-                        lblMesafe.Visible = mesafe > 5;
-                        lblMesafe.Text = mesafe > 5 ? "Mesafe: " + mesafe.ToString("F0") + " m" : "";
-                        if (mesafe > 5) 
-                        { 
-                            lblMesafe.Location = new Point(15, 15); 
-                            lblMesafe.BringToFront(); 
-                        }
-
-                        if (lblGorevMesafe != null)
-                        {
-                            if (mesafe > 5)
-                            {
-                                lblGorevMesafe.Visible = true;
-                                lblGorevMesafe.Text = "GÖREV MESAFESİ: " + mesafe.ToString("F0") + " m";
-                                lblGorevMesafe.Location = new Point(15, 45);
-                                lblGorevMesafe.BringToFront();
-                            }
-                            else
-                            {
-                                lblGorevMesafe.Visible = false;
-                            }
-                        }
                     }
                 }
 
@@ -955,27 +945,28 @@ namespace LaviraSON
                     double gLat = DoubleParse(Get(6));
                     double gLng = DoubleParse(Get(7));
 
-                    // İşaretçi pozisyonunu doğrudan GPS verisiyle güncelle
-                    gorevIgnesi.Position = new PointLatLng(gLat, gLng);
+                    // Önce mesafe kontrolü yapılır (Absürt mesafe koruması)
                     if (RampaKaydedildi)
                     {
-                        double gMesafe = HesaplaMesafe(RampaEnlem, RampaBoylam, gorevIgnesi.Position.Lat, gorevIgnesi.Position.Lng);
-                        bool gecerliMesafe = gMesafe <= 41000;
-                        
-                        gorevIgnesi.IsVisible = gecerliMesafe;
-                        lblGorevMesafe.Visible = gecerliMesafe;
-
-                        if (gecerliMesafe)
+                        double gMesafe = HesaplaMesafe(RampaEnlem, RampaBoylam, gLat, gLng);
+                        if (gMesafe > 41000)
                         {
-                            lblGorevMesafe.Text = "GÖREV MESAFESİ: " + gMesafe.ToString("F0") + " m";
-                            lblGorevMesafe.Location = new Point(15, 45);
-                            lblGorevMesafe.BringToFront();
+                            return; // 41 km'den uzak absürt koordinat reddedildi!
                         }
+                        
+                        gorevIgnesi.IsVisible = true;
+                        lblGorevMesafe.Visible = true;
+                        lblGorevMesafe.Text = "GÖREV MESAFESİ: " + gMesafe.ToString("F0") + " m";
+                        lblGorevMesafe.Location = new Point(15, 45);
+                        lblGorevMesafe.BringToFront();
                     }
                     else
                     {
                         gorevIgnesi.IsVisible = true;
                     }
+
+                    // Mesafe geçerliyse marker ve rota güncellenir
+                    gorevIgnesi.Position = new PointLatLng(gLat, gLng);
 
                     gorevYolu.Points.Clear();
                     if (RampaKaydedildi)
@@ -1118,13 +1109,13 @@ namespace LaviraSON
         {
             switch (stateCode?.Trim())
             {
-                case "0": return "0 - Beklemede / Bağlantı Kuruldu";
-                case "1": return "1 - Roket Rampada";
-                case "2": return "2 - Yükseliyor";
-                case "3": return "3 - Birinci Ayrılma (Tepe Noktası)";
-                case "4": return "4 - İkinci Ayrılma (Ana Paraşüt)";
-                case "5": return "5 - Görev Yükü Ayrıldı";
-                case "6": return "6 - İniş Yapıldı / Kurtarıldı";
+                case "0": return "0 - Bağlantı Kuruldu";
+                case "1": return "1 - Yükseliyor";
+                case "2": return "2 - Motor Yanma Sonu";
+                case "3": return "3 - Süzülme";
+                case "4": return "4 - 1. Ayrılma ";
+                case "5": return "5 - 2. Ayrılma ";
+                case "6": return "6 - İniş Yapıldı Tebrikler LAVİRA";
                 default: return stateCode ?? "0";
             }
         }
@@ -1266,37 +1257,31 @@ namespace LaviraSON
                     foreach (var seri in chart.Series)
                         seri.Points.Clear();
         }
-        private async Task OtomatikRampaKonumuAl()
+        private void OtomatikRampaKonumuAl()
         {
             try
             {
-                using (HttpClient client = new HttpClient())
+                // IP bazlı bulma tamamen kaldırıldı! Artık ilk gelen geçerli aviyonik GPS verisi referans alınıyor.
+                if (GpsGecerliMi(lblGpsEnlem?.Text, lblGpsBoylam?.Text))
                 {
-                    client.Timeout = TimeSpan.FromSeconds(5);
-                    string response = await client.GetStringAsync("http://ip-api.com/json");
-                    JObject json = JObject.Parse(response);
-
-                    if (json["status"]?.ToString() == "success")
-                    {
-                        RampaEnlem = (double)json["lat"];
-                        RampaBoylam = (double)json["lon"];
-                        RampaKaydedildi = true;
-                        Debug.WriteLine($"[RAMPA OTOMATIK] Konum IP'den çekildi: {RampaEnlem}, {RampaBoylam}");
-                    }
-                    else
-                    {
-                        throw new Exception("IP-API başarısız.");
-                    }
+                    double lat = DoubleParse(lblGpsEnlem.Text);
+                    double lng = DoubleParse(lblGpsBoylam.Text);
+                    
+                    RampaEnlem = lat;
+                    RampaBoylam = lng;
+                    RampaKaydedildi = true;
+                    Debug.WriteLine($"[RAMPA OTO-GPS] Aviyonik GPS verisinden ayarlandı: {RampaEnlem}, {RampaBoylam}");
+                    
+                    MessageBox.Show($"Rampa konumu roketin mevcut GPS konumuna kilitlendi!\nEnlem: {lat}\nBoylam: {lng}", "Rampa Ayarlandı", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Henüz geçerli bir roket GPS verisi ulaşmadı!\n(Enlem/Boylam 0 olarak görünüyor)\n\nRampa konumunu haritaya çift tıklayarak manuel de ayarlayabilirsiniz.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"[RAMPA OTOMATIK HATA] IP'den konum çekilemedi: {ex.Message}");
-                // Fallback (Varsayılan Kocaeli)
-                RampaEnlem = 40.743336617541964;
-                RampaBoylam = 29.941275119807784;
-                RampaKaydedildi = true;
-                Debug.WriteLine("[RAMPA FALLBACK] Varsayılan konum kullanıldı.");
+                Debug.WriteLine($"[RAMPA GPS HATA] GPS parse hatası: {ex.Message}");
             }
 
             RampaHaritadaGuncelle();
@@ -1331,19 +1316,14 @@ namespace LaviraSON
                     double mesafe = HesaplaMesafe(RampaEnlem, RampaBoylam, roketIgnesi.Position.Lat, roketIgnesi.Position.Lng);
                     if (mesafe <= 41000)
                     {
-                        lblMesafe.Visible = mesafe > 5;
-                        lblMesafe.Text = mesafe > 5 ? "Mesafe: " + mesafe.ToString("F0") + " m" : "";
-                        if (mesafe > 5) 
-                        { 
-                            lblMesafe.Location = new Point(15, 15); 
-                            lblMesafe.BringToFront(); 
-                        }
+                        lblMesafe.Visible = true;
+                        lblMesafe.Text = "Mesafe: " + mesafe.ToString("F0") + " m";
+                        lblMesafe.Location = new Point(15, 15); 
+                        lblMesafe.BringToFront(); 
 
-                        katman.Routes.Remove(roketYolu);
                         roketYolu.Points.Clear();
                         roketYolu.Points.Add(new PointLatLng(RampaEnlem, RampaBoylam));
                         roketYolu.Points.Add(new PointLatLng(roketIgnesi.Position.Lat, roketIgnesi.Position.Lng));
-                        katman.Routes.Add(roketYolu);
                         gMapControl1.UpdateRouteLocalPosition(roketYolu);
                     }
                     else
@@ -1363,11 +1343,9 @@ namespace LaviraSON
                         lblGorevMesafe.Location = new Point(15, 45);
                         lblGorevMesafe.BringToFront();
 
-                        katman.Routes.Remove(gorevYolu);
                         gorevYolu.Points.Clear();
                         gorevYolu.Points.Add(new PointLatLng(RampaEnlem, RampaBoylam));
                         gorevYolu.Points.Add(new PointLatLng(gorevIgnesi.Position.Lat, gorevIgnesi.Position.Lng));
-                        katman.Routes.Add(gorevYolu);
                         gMapControl1.UpdateRouteLocalPosition(gorevYolu);
                     }
                     else
@@ -1382,10 +1360,10 @@ namespace LaviraSON
             catch (Exception ex) { Debug.WriteLine("Rampa Güncelleme Hatası: " + ex.Message); }
         }
 
-        private async void btnKonumSifirla_Click(object sender, EventArgs e)
+        private void btnKonumSifirla_Click(object sender, EventArgs e)
         {
             btnKonumSifirla.Enabled = false;
-            await OtomatikRampaKonumuAl();
+            OtomatikRampaKonumuAl();
             btnKonumSifirla.Enabled = true;
         }
 
@@ -1507,9 +1485,15 @@ namespace LaviraSON
                 ShowWindow(unityProcess.MainWindowHandle, 5);
 
                 // Unity'yi hemen aktive et
-                ActivateUnityWindow();
+                ActivateUnityWindow(true);
 
-                // Timer ile sürekli aktivasyon — Unity'nin donmasını önler
+                // Panel üzerine gelindiğinde veya tıklandığında focus ver
+                pnlUnity.MouseEnter -= PnlUnity_Focus;
+                pnlUnity.MouseEnter += PnlUnity_Focus;
+                pnlUnity.Click -= PnlUnity_Focus;
+                pnlUnity.Click += PnlUnity_Focus;
+
+                // Timer ile sürekli aktivasyon — Unity'nin çizimini canlı tutar, focus çalmaz
                 unityKeepAliveTimer = new System.Windows.Forms.Timer();
                 unityKeepAliveTimer.Interval = 100; // 100ms aralıkla
                 unityKeepAliveTimer.Tick += UnityKeepAlive_Tick;
@@ -1518,7 +1502,27 @@ namespace LaviraSON
             catch (Exception ex) { Debug.WriteLine("Unity Başlatma Hatası: " + ex.Message); }
         }
 
-        private void ActivateUnityWindow()
+        private void PnlUnity_Focus(object sender, EventArgs e)
+        {
+            ActivateUnityWindow(true);
+        }
+
+        private void RefreshUnityWindow()
+        {
+            try
+            {
+                if (unityProcess == null || unityProcess.HasExited) return;
+                IntPtr hwnd = unityProcess.MainWindowHandle;
+                if (hwnd == IntPtr.Zero) return;
+
+                // Çizimi tazele ama klavye/fare odağını çalma
+                InvalidateRect(hwnd, IntPtr.Zero, false);
+                UpdateWindow(hwnd);
+            }
+            catch (Exception ex) { Debug.WriteLine("Unity Refresh Hatası: " + ex.Message); }
+        }
+
+        private void ActivateUnityWindow(bool setFocus = false)
         {
             try
             {
@@ -1530,8 +1534,11 @@ namespace LaviraSON
                 SendMessage(hwnd, WM_ACTIVATE, (IntPtr)WA_ACTIVE, IntPtr.Zero);
                 // 2. Non-client alanı (başlık çubuğu) aktive et
                 SendMessage(hwnd, WM_NCACTIVATE, (IntPtr)1, IntPtr.Zero);
-                // 3. Focus mesajı gönder
-                PostMessage(hwnd, WM_SETFOCUS, IntPtr.Zero, IntPtr.Zero);
+                // 3. Sadece kullanıcı tıkladığında/üzerine geldiğinde focus ver
+                if (setFocus)
+                {
+                    PostMessage(hwnd, WM_SETFOCUS, IntPtr.Zero, IntPtr.Zero);
+                }
                 // 4. Yeniden çizilmesini zorla
                 InvalidateRect(hwnd, IntPtr.Zero, false);
                 UpdateWindow(hwnd);
@@ -1546,25 +1553,30 @@ namespace LaviraSON
                 unityKeepAliveTimer?.Stop();
                 return;
             }
-            ActivateUnityWindow();
+            RefreshUnityWindow();
         }
+
         protected override void OnActivated(EventArgs e)
         {
             base.OnActivated(e);
-            ActivateUnityWindow();
+            ActivateUnityWindow(false);
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             try
             {
+                // Adım 1 - Timer'ları durdur
                 grafikAnimasyonTimer?.Stop();
                 grafikAnimasyonTimer?.Dispose();
 
-                // Unity keep-alive timer'ını durdur
+                logFlushTimer?.Stop();
+                logFlushTimer?.Dispose();
+
                 unityKeepAliveTimer?.Stop();
                 unityKeepAliveTimer?.Dispose();
 
+                // Adım 2 - Seri portları ve kuyrukları kapat
                 AnaGovdeBaglantiKapat();
                 GorevYukuBaglantiKapat();
                 try
@@ -1573,7 +1585,7 @@ namespace LaviraSON
                         .Where(t => t != null && !t.IsCompleted)
                         .ToArray();
                     if (beklenecekler.Length > 0)
-                        Task.WaitAll(beklenecekler, TimeSpan.FromSeconds(3));
+                        Task.WaitAll(beklenecekler, TimeSpan.FromSeconds(2));
                 }
                 catch (AggregateException aggEx)
                 {
@@ -1583,25 +1595,49 @@ namespace LaviraSON
                             Debug.WriteLine("Task kapanış hatası: " + ex.Message);
                 }
 
-                if (serialPortHakem.IsOpen) serialPortHakem.Close();
+                if (serialPortHakem != null && serialPortHakem.IsOpen)
+                {
+                    try { serialPortHakem.Close(); } catch { }
+                }
+
+                // Adım 3 - Önce Unity Process'ini Kapat (UDP soketi henüz açıkken)
+                if (unityProcess != null && !unityProcess.HasExited)
+                {
+                    try
+                    {
+                        unityProcess.CloseMainWindow();        // WM_CLOSE gönder
+                        if (!unityProcess.WaitForExit(1500))   // 1.5 sn bekle
+                        {
+                            unityProcess.Kill();               // Kapanmadıysa zorla öldür
+                            unityProcess.WaitForExit(500);
+                        }
+                    }
+                    catch (Exception ex) { Debug.WriteLine("Unity kapatma hatası: " + ex.Message); }
+                }
+
+                // Adım 4 - Artık Güvenle Soket, Log ve Ses Kaynaklarını Kapat
+                try
+                {
+                    udpClient?.Close();
+                }
+                catch { }
 
                 lock (logKilidi)
                 {
-                    logWriter?.Close();
-                    logWriter?.Dispose();
+                    try
+                    {
+                        logWriter?.Flush();
+                        logWriter?.Close();
+                        logWriter?.Dispose();
+                    }
+                    catch { }
                 }
 
-                udpClient?.Close();
-                durumSesiYoneticisi?.Dispose();
-                if (unityProcess != null && !unityProcess.HasExited)
+                try
                 {
-                    unityProcess.CloseMainWindow();        // WM_CLOSE gönder
-                    if (!unityProcess.WaitForExit(3000))   // 3 sn bekle
-                    {
-                        unityProcess.Kill();               // Hâlâ kapanmadıysa zorla öldür
-                        unityProcess.WaitForExit(500);
-                    }
+                    durumSesiYoneticisi?.Dispose();
                 }
+                catch { }
             }
             catch (Exception ex) { Debug.WriteLine("Kapanış Hatası: " + ex.Message); }
 

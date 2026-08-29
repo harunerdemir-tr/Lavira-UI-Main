@@ -128,7 +128,6 @@ namespace LaviraSON
             this.lblGorevEnlem = new System.Windows.Forms.Label();
             this.lblGorevPaketNo = new System.Windows.Forms.Label();
             this.lblGorevPaket = new System.Windows.Forms.Label();
-            this.lblGÖREVPAKETNO = this.lblGorevPaket;
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -582,9 +581,6 @@ namespace LaviraSON
             this.tableLayoutPanel3.Controls.Add(this.lblAnaHiz, 1, 3);
             this.tableLayoutPanel3.Controls.Add(this.label1, 0, 4);
             this.tableLayoutPanel3.Controls.Add(this.lblAnaSicaklik, 1, 4);
-            this.tableLayoutPanel3.Controls.Add(this.label5, 0, 17);
-            this.tableLayoutPanel3.Controls.Add(this.lblPaketNo, 0, 27);
-            this.tableLayoutPanel3.Controls.Add(this.lblPaket, 1, 27);
             this.tableLayoutPanel3.Controls.Add(this.lblGpsEnlem, 1, 5);
             this.tableLayoutPanel3.Controls.Add(this.label11, 0, 5);
             this.tableLayoutPanel3.Controls.Add(this.label13, 0, 6);
@@ -607,24 +603,27 @@ namespace LaviraSON
             this.tableLayoutPanel3.Controls.Add(this.lblBasincBMP, 1, 14);
             this.tableLayoutPanel3.Controls.Add(this.label10, 0, 15);
             this.tableLayoutPanel3.Controls.Add(this.lblBasincToplam, 1, 15);
-            this.tableLayoutPanel3.Controls.Add(this.label16, 0, 18);
-            this.tableLayoutPanel3.Controls.Add(this.lblGFiltreX, 1, 18);
-            this.tableLayoutPanel3.Controls.Add(this.label33, 0, 19);
-            this.tableLayoutPanel3.Controls.Add(this.lblGFiltreY, 1, 19);
-            this.tableLayoutPanel3.Controls.Add(this.label57, 0, 20);
-            this.tableLayoutPanel3.Controls.Add(this.lblGFiltreZ, 1, 20);
-            this.tableLayoutPanel3.Controls.Add(this.label25, 0, 21);
-            this.tableLayoutPanel3.Controls.Add(this.lblIvmeX, 1, 21);
-            this.tableLayoutPanel3.Controls.Add(this.label27, 0, 22);
-            this.tableLayoutPanel3.Controls.Add(this.lblIvmeY, 1, 22);
-            this.tableLayoutPanel3.Controls.Add(this.label29, 0, 23);
-            this.tableLayoutPanel3.Controls.Add(this.lblIvmeZ, 1, 23);
-            this.tableLayoutPanel3.Controls.Add(this.label49, 0, 25);
-            this.tableLayoutPanel3.Controls.Add(this.label47, 0, 24);
-            this.tableLayoutPanel3.Controls.Add(this.lblGorevBoylam, 1, 25);
-            this.tableLayoutPanel3.Controls.Add(this.lblGorevEnlem, 1, 24);
-            this.tableLayoutPanel3.Controls.Add(this.lblGorevPaketNo, 0, 26);
-            this.tableLayoutPanel3.Controls.Add(this.lblGorevPaket, 1, 26);
+            this.tableLayoutPanel3.Controls.Add(this.lblGorevPaketNo, 0, 27);
+            this.tableLayoutPanel3.Controls.Add(this.lblGorevPaket, 1, 27);
+            this.tableLayoutPanel3.Controls.Add(this.label49, 0, 26);
+            this.tableLayoutPanel3.Controls.Add(this.label47, 0, 25);
+            this.tableLayoutPanel3.Controls.Add(this.lblGorevBoylam, 1, 26);
+            this.tableLayoutPanel3.Controls.Add(this.lblGorevEnlem, 1, 25);
+            this.tableLayoutPanel3.Controls.Add(this.lblIvmeZ, 1, 24);
+            this.tableLayoutPanel3.Controls.Add(this.label29, 0, 24);
+            this.tableLayoutPanel3.Controls.Add(this.label27, 0, 23);
+            this.tableLayoutPanel3.Controls.Add(this.lblIvmeY, 1, 23);
+            this.tableLayoutPanel3.Controls.Add(this.label25, 0, 22);
+            this.tableLayoutPanel3.Controls.Add(this.lblIvmeX, 1, 22);
+            this.tableLayoutPanel3.Controls.Add(this.lblGFiltreZ, 1, 21);
+            this.tableLayoutPanel3.Controls.Add(this.label57, 0, 21);
+            this.tableLayoutPanel3.Controls.Add(this.label33, 0, 20);
+            this.tableLayoutPanel3.Controls.Add(this.lblGFiltreY, 1, 20);
+            this.tableLayoutPanel3.Controls.Add(this.lblGFiltreX, 1, 19);
+            this.tableLayoutPanel3.Controls.Add(this.label16, 0, 19);
+            this.tableLayoutPanel3.Controls.Add(this.label5, 0, 18);
+            this.tableLayoutPanel3.Controls.Add(this.lblPaketNo, 0, 16);
+            this.tableLayoutPanel3.Controls.Add(this.lblPaket, 1, 16);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
@@ -658,7 +657,7 @@ namespace LaviraSON
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 22F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 22F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(387, 642);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(387, 636);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
             // label2
@@ -792,7 +791,7 @@ namespace LaviraSON
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label5.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.label5.Location = new System.Drawing.Point(3, 374);
+            this.label5.Location = new System.Drawing.Point(3, 396);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(180, 18);
             this.label5.TabIndex = 4;
@@ -804,7 +803,7 @@ namespace LaviraSON
             this.lblPaketNo.AutoSize = true;
             this.lblPaketNo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblPaketNo.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.lblPaketNo.Location = new System.Drawing.Point(3, 594);
+            this.lblPaketNo.Location = new System.Drawing.Point(3, 352);
             this.lblPaketNo.Name = "lblPaketNo";
             this.lblPaketNo.Size = new System.Drawing.Size(87, 18);
             this.lblPaketNo.TabIndex = 0;
@@ -817,7 +816,7 @@ namespace LaviraSON
             this.lblPaket.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblPaket.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblPaket.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.lblPaket.Location = new System.Drawing.Point(215, 594);
+            this.lblPaket.Location = new System.Drawing.Point(215, 352);
             this.lblPaket.Name = "lblPaket";
             this.lblPaket.Size = new System.Drawing.Size(169, 22);
             this.lblPaket.TabIndex = 1;
@@ -1104,7 +1103,7 @@ namespace LaviraSON
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label16.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.label16.Location = new System.Drawing.Point(3, 396);
+            this.label16.Location = new System.Drawing.Point(3, 418);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(134, 18);
             this.label16.TabIndex = 70;
@@ -1117,7 +1116,7 @@ namespace LaviraSON
             this.lblGFiltreX.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblGFiltreX.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblGFiltreX.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.lblGFiltreX.Location = new System.Drawing.Point(215, 396);
+            this.lblGFiltreX.Location = new System.Drawing.Point(215, 418);
             this.lblGFiltreX.Name = "lblGFiltreX";
             this.lblGFiltreX.Size = new System.Drawing.Size(169, 22);
             this.lblGFiltreX.TabIndex = 71;
@@ -1129,7 +1128,7 @@ namespace LaviraSON
             this.label33.AutoSize = true;
             this.label33.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label33.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.label33.Location = new System.Drawing.Point(3, 418);
+            this.label33.Location = new System.Drawing.Point(3, 440);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(133, 18);
             this.label33.TabIndex = 32;
@@ -1142,7 +1141,7 @@ namespace LaviraSON
             this.lblGFiltreY.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblGFiltreY.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblGFiltreY.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.lblGFiltreY.Location = new System.Drawing.Point(215, 418);
+            this.lblGFiltreY.Location = new System.Drawing.Point(215, 440);
             this.lblGFiltreY.Name = "lblGFiltreY";
             this.lblGFiltreY.Size = new System.Drawing.Size(169, 22);
             this.lblGFiltreY.TabIndex = 33;
@@ -1154,7 +1153,7 @@ namespace LaviraSON
             this.label57.AutoSize = true;
             this.label57.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label57.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.label57.Location = new System.Drawing.Point(3, 440);
+            this.label57.Location = new System.Drawing.Point(3, 462);
             this.label57.Name = "label57";
             this.label57.Size = new System.Drawing.Size(133, 18);
             this.label57.TabIndex = 60;
@@ -1167,7 +1166,7 @@ namespace LaviraSON
             this.lblGFiltreZ.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblGFiltreZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblGFiltreZ.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.lblGFiltreZ.Location = new System.Drawing.Point(215, 440);
+            this.lblGFiltreZ.Location = new System.Drawing.Point(215, 462);
             this.lblGFiltreZ.Name = "lblGFiltreZ";
             this.lblGFiltreZ.Size = new System.Drawing.Size(169, 22);
             this.lblGFiltreZ.TabIndex = 57;
@@ -1179,7 +1178,7 @@ namespace LaviraSON
             this.label25.AutoSize = true;
             this.label25.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label25.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.label25.Location = new System.Drawing.Point(3, 462);
+            this.label25.Location = new System.Drawing.Point(3, 484);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(119, 18);
             this.label25.TabIndex = 24;
@@ -1192,7 +1191,7 @@ namespace LaviraSON
             this.lblIvmeX.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblIvmeX.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblIvmeX.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.lblIvmeX.Location = new System.Drawing.Point(215, 462);
+            this.lblIvmeX.Location = new System.Drawing.Point(215, 484);
             this.lblIvmeX.Name = "lblIvmeX";
             this.lblIvmeX.Size = new System.Drawing.Size(169, 22);
             this.lblIvmeX.TabIndex = 25;
@@ -1204,7 +1203,7 @@ namespace LaviraSON
             this.label27.AutoSize = true;
             this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label27.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.label27.Location = new System.Drawing.Point(3, 484);
+            this.label27.Location = new System.Drawing.Point(3, 506);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(118, 18);
             this.label27.TabIndex = 26;
@@ -1217,7 +1216,7 @@ namespace LaviraSON
             this.lblIvmeY.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblIvmeY.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblIvmeY.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.lblIvmeY.Location = new System.Drawing.Point(215, 484);
+            this.lblIvmeY.Location = new System.Drawing.Point(215, 506);
             this.lblIvmeY.Name = "lblIvmeY";
             this.lblIvmeY.Size = new System.Drawing.Size(169, 22);
             this.lblIvmeY.TabIndex = 27;
@@ -1229,7 +1228,7 @@ namespace LaviraSON
             this.label29.AutoSize = true;
             this.label29.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label29.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.label29.Location = new System.Drawing.Point(3, 506);
+            this.label29.Location = new System.Drawing.Point(3, 528);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(118, 18);
             this.label29.TabIndex = 28;
@@ -1242,7 +1241,7 @@ namespace LaviraSON
             this.lblIvmeZ.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblIvmeZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblIvmeZ.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.lblIvmeZ.Location = new System.Drawing.Point(215, 506);
+            this.lblIvmeZ.Location = new System.Drawing.Point(215, 528);
             this.lblIvmeZ.Name = "lblIvmeZ";
             this.lblIvmeZ.Size = new System.Drawing.Size(169, 22);
             this.lblIvmeZ.TabIndex = 29;
@@ -1254,7 +1253,7 @@ namespace LaviraSON
             this.label49.AutoSize = true;
             this.label49.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label49.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.label49.Location = new System.Drawing.Point(3, 550);
+            this.label49.Location = new System.Drawing.Point(3, 572);
             this.label49.Name = "label49";
             this.label49.Size = new System.Drawing.Size(167, 18);
             this.label49.TabIndex = 48;
@@ -1266,7 +1265,7 @@ namespace LaviraSON
             this.label47.AutoSize = true;
             this.label47.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label47.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.label47.Location = new System.Drawing.Point(3, 528);
+            this.label47.Location = new System.Drawing.Point(3, 550);
             this.label47.Name = "label47";
             this.label47.Size = new System.Drawing.Size(158, 18);
             this.label47.TabIndex = 46;
@@ -1279,7 +1278,7 @@ namespace LaviraSON
             this.lblGorevBoylam.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblGorevBoylam.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblGorevBoylam.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.lblGorevBoylam.Location = new System.Drawing.Point(215, 550);
+            this.lblGorevBoylam.Location = new System.Drawing.Point(215, 572);
             this.lblGorevBoylam.Name = "lblGorevBoylam";
             this.lblGorevBoylam.Size = new System.Drawing.Size(169, 22);
             this.lblGorevBoylam.TabIndex = 49;
@@ -1292,7 +1291,7 @@ namespace LaviraSON
             this.lblGorevEnlem.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblGorevEnlem.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblGorevEnlem.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.lblGorevEnlem.Location = new System.Drawing.Point(215, 528);
+            this.lblGorevEnlem.Location = new System.Drawing.Point(215, 550);
             this.lblGorevEnlem.Name = "lblGorevEnlem";
             this.lblGorevEnlem.Size = new System.Drawing.Size(169, 22);
             this.lblGorevEnlem.TabIndex = 47;
@@ -1304,9 +1303,9 @@ namespace LaviraSON
             this.lblGorevPaketNo.AutoSize = true;
             this.lblGorevPaketNo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblGorevPaketNo.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.lblGorevPaketNo.Location = new System.Drawing.Point(3, 572);
+            this.lblGorevPaketNo.Location = new System.Drawing.Point(3, 594);
             this.lblGorevPaketNo.Name = "lblGorevPaketNo";
-            this.lblGorevPaketNo.Size = new System.Drawing.Size(149, 18);
+            this.lblGorevPaketNo.Size = new System.Drawing.Size(145, 18);
             this.lblGorevPaketNo.TabIndex = 50;
             this.lblGorevPaketNo.Text = "GÖREV PAKET NO:";
             this.lblGorevPaketNo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -1317,15 +1316,12 @@ namespace LaviraSON
             this.lblGorevPaket.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblGorevPaket.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblGorevPaket.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.lblGorevPaket.Location = new System.Drawing.Point(215, 572);
+            this.lblGorevPaket.Location = new System.Drawing.Point(215, 594);
             this.lblGorevPaket.Name = "lblGorevPaket";
             this.lblGorevPaket.Size = new System.Drawing.Size(169, 22);
             this.lblGorevPaket.TabIndex = 51;
             this.lblGorevPaket.Text = "0000";
             this.lblGorevPaket.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // serialPort1
-            // 
             // 
             // Form1
             // 

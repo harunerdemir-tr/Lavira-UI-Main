@@ -19,14 +19,14 @@ namespace LaviraSON
         {
             sesKlasoru = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Sesler");
 
-            // Mevcut projedeki durum kodlarına göre örnek eşleştirmeler:
+            // STM32 gömülü durum kodlarıyla birebir eşleşen ses dosyaları:
             sesDosyalari = new Dictionary<int, string>
             {
                 { 0, "Bağlantı Kuruldu .mp3" },
-                { 1, "Roket Rampada.mp3" },
-                { 2, "Yükseliyor.mp3" },
-                { 3, "Birinci ayrılma gerç.mp3" },
-                { 4, "ikinci ayrılma gerçe.mp3" },
+                { 1, "Yükseliyor.mp3" },
+                // 2 (Motor Yanma Sonu) ve 3 (Süzülme) için ses çalınmaz
+                { 4, "Birinci ayrılma gerç.mp3" },
+                { 5, "ikinci ayrılma gerçe.mp3" },
                 { 6, "İniş yapıldı Görev B.mp3" } 
             };
         }

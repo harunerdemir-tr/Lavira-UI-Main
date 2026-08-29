@@ -160,7 +160,8 @@ namespace LaviraSON
         // ===================================================================
         private static int ParseInt(string[] arr, int index)
         {
-            if (index < arr.Length &&
+            if (arr != null && index >= 0 && index < arr.Length &&
+                !string.IsNullOrWhiteSpace(arr[index]) &&
                 int.TryParse(arr[index].Trim(), out int result))
                 return result;
             return 0;
@@ -168,7 +169,8 @@ namespace LaviraSON
 
         private static float ParseFloat(string[] arr, int index)
         {
-            if (index < arr.Length &&
+            if (arr != null && index >= 0 && index < arr.Length &&
+                !string.IsNullOrWhiteSpace(arr[index]) &&
                 float.TryParse(arr[index].Trim().Replace(',', '.'),
                                NumberStyles.Any,
                                CultureInfo.InvariantCulture,
