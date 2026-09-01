@@ -64,6 +64,7 @@ namespace LaviraSON
             this.tblSolPanel = new System.Windows.Forms.TableLayoutPanel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblHaritaYukle = new System.Windows.Forms.Button();
             this.btnPortYenile = new System.Windows.Forms.Button();
             this.cmbHakemPort = new System.Windows.Forms.ComboBox();
             this.btnGorevBaglan = new System.Windows.Forms.Button();
@@ -129,7 +130,6 @@ namespace LaviraSON
             this.lblPaketNo = new System.Windows.Forms.Label();
             this.lblPaket = new System.Windows.Forms.Label();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
-            this.lblHaritaYukle = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tblGrafikPaneli.SuspendLayout();
@@ -472,6 +472,16 @@ namespace LaviraSON
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Bağlantı Ayarları";
             this.groupBox1.UseCompatibleTextRendering = true;
+            // 
+            // lblHaritaYukle
+            // 
+            this.lblHaritaYukle.Location = new System.Drawing.Point(247, 159);
+            this.lblHaritaYukle.Name = "lblHaritaYukle";
+            this.lblHaritaYukle.Size = new System.Drawing.Size(115, 22);
+            this.lblHaritaYukle.TabIndex = 10;
+            this.lblHaritaYukle.Text = "Harita Yükle";
+            this.lblHaritaYukle.UseVisualStyleBackColor = true;
+            this.lblHaritaYukle.Click += new System.EventHandler(this.lblHaritaYukle_Click);
             // 
             // btnPortYenile
             // 
@@ -1324,16 +1334,6 @@ namespace LaviraSON
             this.lblPaket.TabIndex = 1;
             this.lblPaket.Text = "0000";
             this.lblPaket.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblHaritaYukle
-            // 
-            this.lblHaritaYukle.Location = new System.Drawing.Point(247, 159);
-            this.lblHaritaYukle.Name = "lblHaritaYukle";
-            this.lblHaritaYukle.Size = new System.Drawing.Size(115, 22);
-            this.lblHaritaYukle.TabIndex = 10;
-            this.lblHaritaYukle.Text = "Harita Yükle";
-            this.lblHaritaYukle.UseVisualStyleBackColor = true;
-            this.lblHaritaYukle.Click += new System.EventHandler(this.lblHaritaYukle_Click);
             // 
             // Form1
             // 
