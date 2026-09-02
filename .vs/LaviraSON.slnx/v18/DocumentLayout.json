@@ -3,12 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\HRN576\\Desktop\\Lavira Dosyalar\\Lavira_AraYuz\\LaviraSON\\Lavira-UI-Main\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{28E6F471-44B2-4D53-97E3-F02B15877551}|LaviraSON.csproj|C:\\Users\\HRN576\\Desktop\\Lavira Dosyalar\\Lavira_AraYuz\\LaviraSON\\Lavira-UI-Main\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{28E6F471-44B2-4D53-97E3-F02B15877551}|LaviraSON.csproj|c:\\users\\hrn576\\desktop\\lavira dosyalar\\lavira_arayuz\\lavirason\\lavira-ui-main\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{28E6F471-44B2-4D53-97E3-F02B15877551}|LaviraSON.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{28E6F471-44B2-4D53-97E3-F02B15877551}|LaviraSON.csproj|c:\\users\\hrn576\\desktop\\lavira dosyalar\\lavira_arayuz\\lavirason\\lavira-ui-main\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{28E6F471-44B2-4D53-97E3-F02B15877551}|LaviraSON.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{28E6F471-44B2-4D53-97E3-F02B15877551}|LaviraSON.csproj|C:\\Users\\HRN576\\Desktop\\Lavira Dosyalar\\Lavira_AraYuz\\LaviraSON\\Lavira-UI-Main\\telemetridurumu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -17,6 +13,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{28E6F471-44B2-4D53-97E3-F02B15877551}|LaviraSON.csproj|C:\\Users\\HRN576\\Desktop\\Lavira Dosyalar\\Lavira_AraYuz\\LaviraSON\\Lavira-UI-Main\\hakempaketleyici.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{28E6F471-44B2-4D53-97E3-F02B15877551}|LaviraSON.csproj|solutionrelative:hakempaketleyici.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{28E6F471-44B2-4D53-97E3-F02B15877551}|LaviraSON.csproj|C:\\Users\\HRN576\\Desktop\\Lavira Dosyalar\\Lavira_AraYuz\\LaviraSON\\Lavira-UI-Main\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{28E6F471-44B2-4D53-97E3-F02B15877551}|LaviraSON.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,13 +30,13 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "Form1.cs",
               "DocumentMoniker": "C:\\Users\\HRN576\\Desktop\\Lavira Dosyalar\\Lavira_AraYuz\\LaviraSON\\Lavira-UI-Main\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
               "ToolTip": "C:\\Users\\HRN576\\Desktop\\Lavira Dosyalar\\Lavira_AraYuz\\LaviraSON\\Lavira-UI-Main\\Form1.cs",
               "RelativeToolTip": "Form1.cs",
-              "ViewState": "AgIAAGoDAAAAAAAAAAAcwGIAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAFsFAAAAAAAAAAAiwO4DAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-20T10:12:42.742Z",
               "EditorCaption": ""
@@ -55,25 +55,25 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "TelemetriDurumu.cs",
               "DocumentMoniker": "C:\\Users\\HRN576\\Desktop\\Lavira Dosyalar\\Lavira_AraYuz\\LaviraSON\\Lavira-UI-Main\\TelemetriDurumu.cs",
               "RelativeDocumentMoniker": "TelemetriDurumu.cs",
               "ToolTip": "C:\\Users\\HRN576\\Desktop\\Lavira Dosyalar\\Lavira_AraYuz\\LaviraSON\\Lavira-UI-Main\\TelemetriDurumu.cs",
               "RelativeToolTip": "TelemetriDurumu.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAABAAAAAAAAAAAAAywCQAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-07-16T13:05:38.391Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "HakemPaketleyici.cs",
               "DocumentMoniker": "C:\\Users\\HRN576\\Desktop\\Lavira Dosyalar\\Lavira_AraYuz\\LaviraSON\\Lavira-UI-Main\\HakemPaketleyici.cs",
               "RelativeDocumentMoniker": "HakemPaketleyici.cs",
               "ToolTip": "C:\\Users\\HRN576\\Desktop\\Lavira Dosyalar\\Lavira_AraYuz\\LaviraSON\\Lavira-UI-Main\\HakemPaketleyici.cs",
               "RelativeToolTip": "HakemPaketleyici.cs",
-              "ViewState": "AgIAADIAAAAAAAAAAAAmwBcAAAAcAAAAAAAAAA==",
+              "ViewState": "AgIAAGAAAAAAAAAAAAAAABcAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-20T10:12:51.36Z"
             }
